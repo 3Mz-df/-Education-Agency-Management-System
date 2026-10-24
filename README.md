@@ -3,8 +3,7 @@
 Project Overview：An education and training institution management platform built on the Spring Cloud Alibaba microservices architecture, comprising core modules such as course package management, RBAC permission authentication, and unified OAuth2 authorization. The platform delivers course configuration and student management for B-side institutions, and course query and reservation services for C-side users.
 
 
-技术栈：Boot 3.2.5 / Cloud 2023.0.1 / SCA 2023.0.1.0 / MySQL / Redis / Nacos
-Tech Stack：
+技术栈:Spring Cloud Alibaba, Nacos, MySQL, Redis, MyBatis-Plus, OAuth2, JWT
 
 
 模块划分
