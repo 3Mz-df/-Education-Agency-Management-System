@@ -24,8 +24,8 @@
 
     <!-- 子模块（按需添加） -->
     <modules>
-
         <module>eams-common</module>
+        <module>eams-modules</module>
     </modules>
 
     <!-- 版本号集中管理 -->
