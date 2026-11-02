@@ -1,0 +1,22 @@
+# 网关统一入口端口：8083
+server:
+  port: 8083
+
+spring:
+  # 服务名
+  application:
+    name: eams-gateway
+  cloud:
+    nacos:
+      # 注册中心8848
+      discovery:
+        server-addr: 127.0.0.1:8848
+        ip: 127.0.0.1
+    # 网关路由表
+    gateway:
+      routes:
+        # 1访问/System/**的请求，转发到eams-system服务
+        - id: eams-system
+          uri: lb://eams-system #负载均衡
+          predicates: #触发条件
+            - Path=/system/**

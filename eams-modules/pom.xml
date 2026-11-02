@@ -20,5 +20,6 @@
 
     <modules>
          <module>eams-system</module>
+        <module>eams-gateway</module>
     </modules>
 </project>
