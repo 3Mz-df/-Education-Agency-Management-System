@@ -3,11 +3,10 @@ package com.eams.system.controller;
 import com.eams.common.api.PageResult;
 import com.eams.common.api.Result;
 import com.eams.system.entity.SysUser;
-import com.eams.system.mapper.SysUserMapper;
 import com.eams.system.service.SysUserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 ///**
 // * 检验数据库连通
@@ -47,23 +46,28 @@ public class UserController{
             @RequestParam(defaultValue = "10") Long pageSize){
         return Result.success(sysUserService.pageQuery(pageNum, pageSize));
     }
+    // 查单个用户：id 写在 URL 里，比如 GET /system/user/3
+    @GetMapping("/{id}")
+    public Result<SysUser> get(@PathVariable Long id){
+        return Result.success(sysUserService.getById(id));
+    }
 
     //新增用户
     @PostMapping
-    public Result<Void> add(@RequestBody SysUser user){
+    public Result<Long> add(@Valid @RequestBody SysUser user){
         sysUserService.save(user);
-        return Result.success();
+        return Result.success(user.getId());
     }
 
     //修改用户
     @PutMapping
-    public Result<Void> update(@RequestBody SysUser user){
+    public Result<Void> update(@Valid @RequestBody SysUser user){
         sysUserService.updateById(user);
         return Result.success();
     }
 
     //删除用户
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public Result<Void> delete(@PathVariable Long id){
         sysUserService.removeById(id);
         return Result.success();
