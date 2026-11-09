@@ -18,3 +18,15 @@ spring:
     url: "jdbc:mysql://127.0.0.1:3306/eams?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true"
     username: root
     password: "070109"
+
+# Knife4j 接口文档
+springdoc:
+  api-docs:
+    enabled: true #接口数据源
+  swagger-ui:
+    enabled: true #接口文档界面
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn

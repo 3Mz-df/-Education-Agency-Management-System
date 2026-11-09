@@ -11,4 +11,6 @@ Project Overview：An education and training institution management platform bui
 
 启动顺序
 
+测试地址：
+http://localhost:8084/doc.html
 
