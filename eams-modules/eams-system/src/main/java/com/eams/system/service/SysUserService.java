@@ -2,6 +2,7 @@ package com.eams.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.eams.common.api.PageResult;
+import com.eams.system.dto.LoginDTO;
 import com.eams.system.entity.SysUser;
 
 /**
@@ -13,4 +14,9 @@ public interface SysUserService extends IService<SysUser> {
      * 分页查询用户
      */
     PageResult<SysUser> pageQuery(Long pageNum, Long pageSize);
+
+    /**
+     * 登录：校验用户名密码，成功返回 token
+     */
+    String login(LoginDTO loginDTO);
 }

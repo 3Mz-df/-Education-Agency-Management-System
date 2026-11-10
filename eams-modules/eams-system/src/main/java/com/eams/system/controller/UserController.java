@@ -2,6 +2,7 @@ package com.eams.system.controller;
 
 import com.eams.common.api.PageResult;
 import com.eams.common.api.Result;
+import com.eams.system.dto.LoginDTO;
 import com.eams.system.entity.SysUser;
 import com.eams.system.service.SysUserService;
 import jakarta.validation.Valid;
@@ -71,5 +72,11 @@ public class UserController{
     public Result<Void> delete(@PathVariable Long id){
         sysUserService.removeById(id);
         return Result.success();
+    }
+
+    // 登录
+    @PostMapping("/login")
+    public Result<String> login(@Valid @RequestBody LoginDTO loginDTO) {
+        return Result.success(sysUserService.login(loginDTO));
     }
 }

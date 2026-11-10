@@ -3,6 +3,7 @@ package com.eams.system.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -29,4 +30,8 @@ public class SysUser {
     private String nickname;
 
     private LocalDateTime createTime;
+
+    //密码 隔离 不返回前端
+    @JsonIgnore
+    private String password;
 }
