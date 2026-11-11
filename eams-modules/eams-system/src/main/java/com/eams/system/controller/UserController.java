@@ -2,6 +2,7 @@ package com.eams.system.controller;
 
 import com.eams.common.api.PageResult;
 import com.eams.common.api.Result;
+import com.eams.common.context.UserContext;
 import com.eams.system.dto.LoginDTO;
 import com.eams.system.entity.SysUser;
 import com.eams.system.service.SysUserService;
@@ -78,5 +79,11 @@ public class UserController{
     @PostMapping("/login")
     public Result<String> login(@Valid @RequestBody LoginDTO loginDTO) {
         return Result.success(sysUserService.login(loginDTO));
+    }
+
+    // 获取当前登录用户信息（演示 UserContext 的用法）
+    @GetMapping("/current")
+    public Result<UserContext.UserInfo> current() {
+        return Result.success(UserContext.requireLogin());
     }
 }
