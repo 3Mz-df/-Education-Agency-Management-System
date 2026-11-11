@@ -57,7 +57,7 @@ public class UserController{
     //新增用户
     @PostMapping
     public Result<Long> add(@Valid @RequestBody SysUser user){
-        sysUserService.save(user);
+        sysUserService.addUser(user);
         return Result.success(user.getId());
     }
 
@@ -75,15 +75,16 @@ public class UserController{
         return Result.success();
     }
 
-    // 登录
+    //登录
     @PostMapping("/login")
     public Result<String> login(@Valid @RequestBody LoginDTO loginDTO) {
         return Result.success(sysUserService.login(loginDTO));
     }
 
-    // 获取当前登录用户信息（演示 UserContext 的用法）
+    //获取当前登录用户信息（用userId查完整用户信息返回）
     @GetMapping("/current")
-    public Result<UserContext.UserInfo> current() {
-        return Result.success(UserContext.requireLogin());
+    public Result<SysUser> current(){
+        Long userId = UserContext.requireLogin().getUserId();
+        return Result.success(sysUserService.getById(userId));
     }
 }

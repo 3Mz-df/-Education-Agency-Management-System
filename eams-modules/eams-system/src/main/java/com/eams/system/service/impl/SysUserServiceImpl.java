@@ -49,4 +49,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //登陆成功
         return JwtUtil.generateToken(user.getId(), user.getUsername());
         }
+
+    @Override
+    public void addUser(SysUser user) {
+        //密码不能为空
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            throw new BizException("密码不能为空");
+        }
+        //把明文密码加密成密文，再入库
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        this.save(user);
+    }
 }

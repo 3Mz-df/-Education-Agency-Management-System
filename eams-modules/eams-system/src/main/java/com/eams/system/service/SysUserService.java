@@ -19,4 +19,9 @@ public interface SysUserService extends IService<SysUser> {
      * 登录：校验用户名密码，成功返回 token
      */
     String login(LoginDTO loginDTO);
+
+    /**
+     * 新增用户（密码加密后入库）
+     */
+    void addUser(SysUser user);
 }
