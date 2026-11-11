@@ -60,4 +60,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.save(user);
     }
+
+    @Override
+    public void updateUser(SysUser user) {
+        // 传了密码才加密；没传（null 或空串），让 updateById 自动跳过，保持原密码不变
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(null);
+        }
+        this.updateById(user);
+    }
 }

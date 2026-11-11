@@ -64,7 +64,7 @@ public class UserController{
     //修改用户
     @PutMapping
     public Result<Void> update(@Valid @RequestBody SysUser user){
-        sysUserService.updateById(user);
+        sysUserService.updateUser(user);
         return Result.success();
     }
 

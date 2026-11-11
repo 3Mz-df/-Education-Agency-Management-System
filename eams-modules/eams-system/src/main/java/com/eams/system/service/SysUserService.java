@@ -24,4 +24,9 @@ public interface SysUserService extends IService<SysUser> {
      * 新增用户（密码加密后入库）
      */
     void addUser(SysUser user);
+
+    /**
+     * 更新用户（更新的密码也加密后入库）
+     */
+    void updateUser(SysUser user);
 }
