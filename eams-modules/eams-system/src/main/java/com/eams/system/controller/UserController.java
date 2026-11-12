@@ -45,8 +45,11 @@ public class UserController{
     @GetMapping("/list")
     public Result<PageResult<SysUser>> list(
             @RequestParam(defaultValue = "1") Long pageNum,
-            @RequestParam(defaultValue = "10") Long pageSize){
-        return Result.success(sysUserService.pageQuery(pageNum, pageSize));
+            @RequestParam(defaultValue = "10") Long pageSize,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer userType,
+            @RequestParam(required = false) Integer status){
+        return Result.success(sysUserService.pageQuery(pageNum, pageSize, keyword, userType, status));
     }
     // 查单个用户：id 写在 URL 里，比如 GET /system/user/3
     @GetMapping("/{id}")

@@ -13,7 +13,7 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 分页查询用户
      */
-    PageResult<SysUser> pageQuery(Long pageNum, Long pageSize);
+    PageResult<SysUser> pageQuery(Long pageNum, Long pageSize, String keyword, Integer userTpye, Integer status);
 
     /**
      * 登录：校验用户名密码，成功返回 token

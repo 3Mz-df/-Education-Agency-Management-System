@@ -27,11 +27,26 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public PageResult<SysUser> pageQuery(Long pageNum, Long pageSize) {
+    public PageResult<SysUser> pageQuery(Long pageNum, Long pageSize, String keyword, Integer userType, Integer status) {
         //构建分页对象
         Page<SysUser> page = new Page<>(pageNum, pageSize);
-        //执行分页查询
-        this.page(page);
+        //构建条件构造器
+        LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
+        //关键词模糊匹配（手机号，用户名）
+        if (keyword != null && !keyword.isEmpty()) {
+            wrapper.and(w -> w.like(SysUser::getUsername, keyword)
+                    .or().like(SysUser::getPhone, keyword));
+        }
+        //(用户类型) 传了才筛选
+        if (userType != null){
+            wrapper.eq(SysUser::getUserType, userType);
+        }
+        //(状态) 传了才筛选
+        if (status != null){
+            wrapper.eq(SysUser::getStatus, status);
+        }
+        //执行分页查询 条件清单一并上交
+        this.page(page, wrapper);
         //返回分页结果
         return PageResult.of(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
     }
