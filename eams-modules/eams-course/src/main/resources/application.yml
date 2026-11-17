@@ -1,0 +1,32 @@
+# 课程服务端口
+server:
+  port: 8085
+
+spring:
+  # 服务名
+  application:
+    name: eams-course
+  cloud:
+    nacos:
+      # 注册中心：Nacos地址（本机+8848端口）
+      discovery:
+        server-addr: 127.0.0.1:8848
+        ip: 127.0.0.1
+  # 数据源
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://127.0.0.1:3306/eams?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true"
+    username: root
+    password: "070109"
+
+# Knife4j 接口文档
+springdoc:
+  api-docs:
+    enabled: true #接口数据源
+  swagger-ui:
+    enabled: true #接口文档界面
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn

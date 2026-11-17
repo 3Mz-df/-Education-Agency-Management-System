@@ -21,5 +21,6 @@
     <modules>
          <module>eams-system</module>
         <module>eams-gateway</module>
+        <module>eams-course</module>
     </modules>
 </project>
