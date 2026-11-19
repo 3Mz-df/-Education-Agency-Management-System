@@ -13,4 +13,4 @@ Project Overview：An education and training institution management platform bui
 
 Swagger地址：
 http://localhost:8084/doc.html
-http://localhost:8085/doc.html (课程)
+http://localhost:8085/doc.html (课程)1
