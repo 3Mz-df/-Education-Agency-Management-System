@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# Git 从仓库根目录运行钩子，先定位到前端工程再读取配置。
+cd "$(dirname "$0")/.." || exit 1
+export PATH="$PWD/node_modules/.bin:$PATH"
+
+exec vp staged "$@"

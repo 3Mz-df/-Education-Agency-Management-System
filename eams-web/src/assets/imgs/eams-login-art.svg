@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" fill="none">
+  <defs>
+    <radialGradient id="ambient" cx="0" cy="0" r="1" gradientTransform="translate(435 472) rotate(90) scale(450 625)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#34313F" stop-opacity=".54"/>
+      <stop offset=".6" stop-color="#17171F" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#07080B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="metal" x1="420" y1="360" x2="470" y2="632" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A9AAB4"/>
+      <stop offset=".2" stop-color="#E4E5EB"/>
+      <stop offset=".36" stop-color="#B4B5C0"/>
+      <stop offset=".48" stop-color="#71727F"/>
+      <stop offset=".5" stop-color="#4A4B59"/>
+      <stop offset=".76" stop-color="#292B38"/>
+      <stop offset="1" stop-color="#181A25"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="200" y1="400" x2="720" y2="665" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C9CAD3" stop-opacity=".65"/>
+      <stop offset=".5" stop-color="#8F89AD" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#373345" stop-opacity=".08"/>
+    </linearGradient>
+    <radialGradient id="floor" cx="0" cy="0" r="1" gradientTransform="translate(490 690) scale(420 24)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9B8AB4" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#07080B" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-35%" width="160%" height="200%">
+      <feDropShadow dx="14" dy="27" stdDeviation="13" flood-color="#000" flood-opacity=".9"/>
+    </filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <path fill="#07080B" d="M0 0h1600v1000H0z"/>
+  <path fill="url(#ambient)" d="M0 0h1200v1000H0z"/>
+  <ellipse cx="490" cy="690" rx="430" ry="30" fill="url(#floor)"/>
+  <g font-family="Arial Black, Segoe UI, sans-serif" font-size="260" font-weight="900" font-style="italic" letter-spacing="-14">
+    <text x="108" y="626" textLength="760" lengthAdjust="spacingAndGlyphs" fill="#11121B" stroke="#222330" stroke-width="2" filter="url(#shadow)">EAMS</text>
+    <text x="98" y="612" textLength="760" lengthAdjust="spacingAndGlyphs" fill="#272833" stroke="#343440" stroke-width="1.4">EAMS</text>
+    <text x="92" y="603" textLength="760" lengthAdjust="spacingAndGlyphs" fill="url(#metal)" stroke="url(#edge)" stroke-width="1" paint-order="stroke fill">EAMS</text>
+  </g>
+  <path fill="#fff" opacity=".018" filter="url(#grain)" d="M0 0h1600v1000H0z"/>
+</svg>

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# 使用项目内的校验工具，避免依赖 IDE 的工作目录和全局 pnpm。
+cd "$(dirname "$0")/.." || exit 1
+export PATH="$PWD/node_modules/.bin:$PATH"
+
+exec sa git-commit-verify
