@@ -2,9 +2,11 @@ import { computed, effectScope, onScopeDispose, ref, toRefs, watch } from 'vue';
 import type { Ref } from 'vue';
 import { useDateFormat, useEventListener, useNow, usePreferredColorScheme } from '@vueuse/core';
 import { defineStore } from 'pinia';
+import { defu } from 'defu';
 import { getPaletteColorByNumber } from '@sa/color';
 import { localStg } from '@/utils/storage';
 import { SetupStoreId } from '@/enum';
+import { createEamsThemeOverrides, resolveEamsPrimary } from '@/theme/eams';
 import { useAuthStore } from '../auth';
 import {
   addThemeVarsToGlobal,
@@ -47,16 +49,23 @@ export const useThemeStore = defineStore(SetupStoreId.Theme, () => {
   /** Theme colors */
   const themeColors = computed(() => {
     const { themeColor, otherColor, isInfoFollowPrimary } = settings.value;
+    const primary = resolveEamsPrimary(themeColor, darkMode.value);
     const colors: App.Theme.ThemeColor = {
-      primary: themeColor,
+      primary,
       ...otherColor,
-      info: isInfoFollowPrimary ? themeColor : otherColor.info
+      info: isInfoFollowPrimary ? primary : otherColor.info
     };
     return colors;
   });
 
   /** Naive theme */
-  const naiveTheme = computed(() => getNaiveTheme(themeColors.value, settings.value, naiveThemeOverrides.value));
+  const naiveTheme = computed(() =>
+    getNaiveTheme(
+      themeColors.value,
+      settings.value,
+      defu(naiveThemeOverrides.value ?? {}, createEamsThemeOverrides(darkMode.value, themeColors.value.primary))
+    )
+  );
 
   /**
    * Settings json

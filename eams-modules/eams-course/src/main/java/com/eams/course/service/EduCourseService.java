@@ -11,5 +11,8 @@ public interface EduCourseService extends IService<EduCourse> {
 
     //新增课程
     Long addCourse(CourseAddDTO courseAddDTO);
+
+    //根据id查询课程详情
+    EduCourse getCourseDetail(Long id);
 }
 

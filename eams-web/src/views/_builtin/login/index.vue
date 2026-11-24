@@ -4,7 +4,7 @@ import type { GlobalThemeOverrides } from 'naive-ui';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
 import { useThemeStore } from '@/store/modules/theme';
-import loginArtwork from '@/assets/imgs/eams-login-art.svg';
+import loginArtwork from '@/assets/imgs/eams-ink-landscape.png';
 import PwdLogin from './modules/pwd-login.vue';
 
 defineOptions({ name: 'Login', inheritAttrs: false });
@@ -17,39 +17,27 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   const dark = themeStore.darkMode;
   return {
     Input: {
-      borderRadius: '10px',
+      borderRadius: '5px',
       heightLarge: '50px',
       fontSizeLarge: '14px',
-      color: dark ? '#111218' : '#ffffff',
-      colorFocus: dark ? '#151620' : '#ffffff',
-      textColor: dark ? '#eef0f7' : '#232638',
-      placeholderColor: dark ? '#676b7d' : '#969aab',
-      caretColor: '#a89bf7',
-      border: dark ? '1px solid #30313d' : '1px solid #d9dce6',
-      borderHover: '1px solid #7168b8',
-      borderFocus: '1px solid #a395ed',
-      boxShadowFocus: '0 0 0 3px rgba(150, 131, 236, 0.12)'
+      color: dark ? '#1b211c' : '#fdfcf8',
+      colorFocus: dark ? '#202720' : '#ffffff',
+      textColor: dark ? '#e9ede2' : '#303a30',
+      placeholderColor: dark ? '#879180' : '#939c8e',
+      caretColor: themeStore.themeColors.primary,
+      border: dark ? '1px solid #3a4337' : '1px solid #c9cebf',
+      borderHover: `1px solid ${themeStore.themeColors.primary}`,
+      borderFocus: `1px solid ${themeStore.themeColors.primary}`,
+      boxShadowFocus: '0 0 0 3px rgba(172, 105, 88, 0.12)'
     },
     Button: {
       heightLarge: '50px',
-      borderRadiusLarge: '10px',
+      borderRadiusLarge: '5px',
       fontSizeLarge: '14px',
-      fontWeight: '600',
-      colorPrimary: '#8573e7',
-      colorHoverPrimary: '#9584f2',
-      colorPressedPrimary: '#7260cf',
-      colorFocusPrimary: '#8573e7',
-      borderPrimary: '1px solid #9a89f4',
-      borderHoverPrimary: '1px solid #b2a2ff',
-      borderPressedPrimary: '1px solid #8573e7',
-      borderFocusPrimary: '1px solid #9a89f4',
-      textColorPrimary: '#ffffff',
-      textColorHoverPrimary: '#ffffff',
-      textColorPressedPrimary: '#ffffff',
-      textColorFocusPrimary: '#ffffff'
+      fontWeight: '600'
     },
     Form: {
-      labelTextColor: dark ? '#cbd0df' : '#42475c'
+      labelTextColor: dark ? '#c1c9bb' : '#566150'
     }
   };
 });
@@ -86,6 +74,13 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
     <main class="login-layout">
       <section class="login-brand" aria-label="EAMS 教培管理系统">
         <p class="brand-eyebrow">EDUCATION · MANAGEMENT</p>
+        <div class="login-calligraphy" aria-hidden="true">
+          <span>学无止境</span>
+          <div class="calligraphy-meta">
+            <span>EAMS</span>
+            <span class="calligraphy-seal">教培</span>
+          </div>
+        </div>
         <div class="brand-caption">
           <span class="brand-rule" aria-hidden="true"></span>
           <div>
@@ -132,11 +127,11 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 
 <style scoped>
 .login-screen {
-  --login-panel: rgba(23, 24, 32, 0.94);
-  --login-border: rgba(212, 213, 235, 0.12);
-  --login-text: #f0f1f6;
-  --login-secondary: #868a9c;
-  --login-input: #111218;
+  --login-panel: rgba(34, 39, 32, 0.96);
+  --login-border: rgba(204, 214, 191, 0.17);
+  --login-text: #e9ede2;
+  --login-secondary: #98a28f;
+  --login-input: #1b211c;
 
   position: relative;
   isolation: isolate;
@@ -146,7 +141,7 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background: #07080b;
+  background: #131a15;
   color: var(--login-text);
   font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
 }
@@ -162,15 +157,17 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 }
 
 .login-artwork {
-  object-fit: cover;
-  object-position: center;
+  object-fit: contain;
+  object-position: center 75%;
+  filter: invert(0.82) sepia(0.12);
+  opacity: 0.24;
 }
 
 .login-vignette {
   z-index: -1;
   background:
-    linear-gradient(90deg, transparent 35%, rgba(7, 8, 11, 0.25) 64%, rgba(7, 8, 11, 0.55)),
-    radial-gradient(ellipse at 50% 0%, transparent 20%, rgba(0, 0, 0, 0.22) 100%);
+    linear-gradient(90deg, transparent 35%, rgba(19, 26, 21, 0.2) 64%, rgba(19, 26, 21, 0.6)),
+    radial-gradient(ellipse at 50% 0%, transparent 20%, rgba(0, 0, 0, 0.14) 100%);
 }
 
 .login-topbar {
@@ -190,9 +187,10 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 }
 
 .login-wordmark > span {
-  color: #d9dbe6;
-  font-size: 15px;
-  font-weight: 650;
+  color: #d7dece;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 19px;
+  font-weight: 400;
   letter-spacing: 0.24em;
 }
 
@@ -200,11 +198,11 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   display: flex;
   gap: 8px;
   align-items: center;
-  color: #a1a4b4;
+  color: var(--login-secondary);
 }
 
 .login-tools :deep(.n-button) {
-  color: #a1a4b4;
+  color: var(--login-secondary);
 }
 
 .login-layout {
@@ -228,10 +226,53 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 }
 
 .brand-eyebrow {
-  color: #727482;
+  color: #8b9784;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.28em;
+}
+
+.login-calligraphy {
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  margin: 24px 0 24px 56px;
+  color: #dfe5d7;
+}
+
+.login-calligraphy > span {
+  font-family: var(--eams-display-font);
+  font-size: 56px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 1.35;
+  writing-mode: vertical-rl;
+}
+
+.calligraphy-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-top: 52px;
+}
+
+.calligraphy-meta > span:first-child {
+  color: #929e8b;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  writing-mode: vertical-rl;
+}
+
+.calligraphy-seal {
+  padding: 6px 4px;
+  border: 1px solid #a46958;
+  color: #bf8473;
+  font-family: var(--eams-display-font);
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  writing-mode: vertical-rl;
 }
 
 .brand-caption {
@@ -244,11 +285,11 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   width: 28px;
   height: 1px;
   margin-top: 11px;
-  background: #676073;
+  background: #7b8974;
 }
 
 .brand-caption p {
-  color: #c0c1cc;
+  color: #c0cbb6;
   font-size: 17px;
   font-weight: 400;
   letter-spacing: 0.1em;
@@ -257,7 +298,7 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 .brand-caption div > span {
   display: block;
   margin-top: 10px;
-  color: #606473;
+  color: #87957e;
   font-size: 12px;
   letter-spacing: 0.08em;
 }
@@ -266,7 +307,7 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   position: relative;
   padding: 38px 36px 26px;
   border: 1px solid var(--login-border);
-  border-radius: 22px;
+  border-radius: 8px;
   background: var(--login-panel);
   box-shadow:
     0 32px 100px rgba(0, 0, 0, 0.42),
@@ -282,7 +323,7 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   right: 48px;
   left: 48px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(192, 179, 255, 0.45), transparent);
+  background: linear-gradient(90deg, transparent, rgba(190, 136, 116, 0.5), transparent);
   content: '';
 }
 
@@ -294,7 +335,7 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 
 .panel-eyebrow {
   margin-bottom: 5px;
-  color: #85809b;
+  color: #9da890;
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.22em;
@@ -303,7 +344,8 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 .panel-brand h1 {
   color: var(--login-text);
   font-size: 18px;
-  font-weight: 550;
+  font-family: var(--eams-display-font);
+  font-weight: 500;
   letter-spacing: 0.01em;
 }
 
@@ -318,12 +360,13 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   height: 2px;
   margin-bottom: 17px;
   border-radius: 2px;
-  background: #9988ec;
+  background: #b67866;
 }
 
 .panel-heading h2 {
-  font-size: 25px;
-  font-weight: 550;
+  font-family: var(--eams-display-font);
+  font-size: 28px;
+  font-weight: 500;
   letter-spacing: 0.05em;
   line-height: 1.4;
 }
@@ -343,13 +386,13 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 .login-panel :deep(.n-input__input-el:-webkit-autofill) {
   -webkit-box-shadow: 0 0 0 1000px var(--login-input) inset;
   -webkit-text-fill-color: var(--login-text);
-  caret-color: #a89bf7;
+  caret-color: #c58a7b;
 }
 
 .login-panel :deep(.login-submit) {
   margin-top: 4px;
   letter-spacing: 0.3em;
-  box-shadow: 0 5px 22px rgba(110, 87, 206, 0.13);
+  box-shadow: 0 5px 22px rgba(70, 37, 30, 0.12);
 }
 
 .panel-footer {
@@ -358,7 +401,7 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   justify-content: center;
   gap: 14px;
   margin-top: 26px;
-  color: #646879;
+  color: #89947f;
   font-size: 10px;
   letter-spacing: 0.08em;
 }
@@ -366,7 +409,7 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 .footer-rule {
   width: 30px;
   height: 1px;
-  background: rgba(136, 138, 161, 0.14);
+  background: rgba(146, 157, 130, 0.2);
 }
 
 .login-footer {
@@ -377,7 +420,7 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   gap: 12px;
   min-height: 40px;
   padding: 0 24px 24px;
-  color: #555966;
+  color: #7d8c74;
   font-size: 10px;
   letter-spacing: 0.12em;
 }
@@ -385,15 +428,35 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 .footer-divider {
   width: 1px;
   height: 10px;
-  background: #33353f;
+  background: #3b4835;
 }
 
 .login-screen--light {
-  --login-panel: rgba(244, 245, 250, 0.97);
-  --login-border: rgba(255, 255, 255, 0.7);
-  --login-text: #242738;
-  --login-secondary: #777c91;
-  --login-input: #ffffff;
+  --login-panel: rgba(250, 249, 241, 0.97);
+  --login-border: rgba(103, 118, 89, 0.22);
+  --login-text: #303a2e;
+  --login-secondary: #7a8570;
+  --login-input: #fdfcf8;
+
+  background: #e8ecdf;
+}
+
+.login-screen--light .login-artwork {
+  filter: none;
+  opacity: 0.5;
+}
+
+.login-screen--light .login-vignette {
+  background: linear-gradient(90deg, transparent 35%, rgba(232, 236, 223, 0.6));
+}
+
+.login-screen--light .login-wordmark > span,
+.login-screen--light .login-calligraphy {
+  color: #3d4b36;
+}
+
+.login-screen--light .brand-caption p {
+  color: #627457;
 }
 
 @keyframes panel-enter {
@@ -450,11 +513,11 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 
   .login-artwork {
     object-position: 20% center;
-    opacity: 0.5;
+    opacity: 0.15;
   }
 
   .login-vignette {
-    background: rgba(7, 8, 11, 0.4);
+    background: rgba(19, 26, 21, 0.2);
   }
 }
 
@@ -465,7 +528,7 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
 
   .login-panel {
     padding: 30px 24px 24px;
-    border-radius: 18px;
+    border-radius: 8px;
   }
 
   .panel-brand h1 {
@@ -492,11 +555,11 @@ const loginThemeOverrides = computed<GlobalThemeOverrides>(() => {
   .login-artwork {
     object-fit: contain;
     object-position: center top;
-    opacity: 0.7;
+    opacity: 0.2;
   }
 
   .login-vignette {
-    background: linear-gradient(180deg, transparent, rgba(7, 8, 11, 0.2) 60%);
+    background: linear-gradient(180deg, transparent, rgba(19, 26, 21, 0.2) 60%);
   }
 }
 

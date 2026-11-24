@@ -30,7 +30,7 @@ const { isFullscreen, toggle } = useFullscreen();
 </script>
 
 <template>
-  <DarkModeContainer class="h-full flex-y-center px-12px shadow-header">
+  <DarkModeContainer class="eams-header h-full flex-y-center px-12px shadow-header">
     <GlobalLogo v-if="showLogo" class="h-full" :style="{ width: themeStore.sider.width + 'px' }" />
     <MenuToggler v-if="showMenuToggler" :collapsed="appStore.siderCollapse" @click="appStore.toggleSiderCollapse" />
     <div v-if="showMenu" :id="GLOBAL_HEADER_MENU_ID" class="h-full flex-y-center flex-1-hidden"></div>
@@ -49,6 +49,7 @@ const { isFullscreen, toggle } = useFullscreen();
       <ThemeSchemaSwitch
         :theme-schema="themeStore.themeScheme"
         :is-dark="themeStore.darkMode"
+        aria-label="切换明暗主题"
         @switch="themeStore.toggleThemeScheme"
       />
       <ThemeButton />
@@ -57,4 +58,9 @@ const { isFullscreen, toggle } = useFullscreen();
   </DarkModeContainer>
 </template>
 
-<style scoped></style>
+<style scoped>
+.eams-header {
+  border-bottom: 1px solid var(--eams-border);
+  background: var(--eams-chrome);
+}
+</style>

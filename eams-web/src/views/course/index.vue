@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { h, onMounted, reactive, ref, shallowRef } from 'vue';
-import { NTag } from 'naive-ui';
+import { NButton, NTag } from 'naive-ui';
 import type { DataTableColumns, FormInst, FormRules } from 'naive-ui';
 import { displayText, formatDateTime } from '@/utils/eams';
-import { fetchAddCourse, fetchCourseList } from '@/service/api';
+import { fetchAddCourse, fetchCourseDetail, fetchCourseList } from '@/service/api';
 import type { Course } from '@/service/api';
 
 defineOptions({ name: 'Course' });
@@ -11,6 +11,8 @@ defineOptions({ name: 'Course' });
 const courses = shallowRef<Course[]>([]);
 const loading = ref(false);
 const loadError = ref('');
+const detailCourse = shallowRef<Course | null>(null);
+const detailLoadingId = ref<number | null>(null);
 const showAdd = ref(false);
 const saving = ref(false);
 const formRef = ref<FormInst | null>(null);
@@ -47,7 +49,26 @@ const columns: DataTableColumns<Course> = [
       )
   },
   { title: '创建时间', key: 'createTime', width: 180, render: row => formatDateTime(row.createTime) },
-  { title: '更新时间', key: 'updateTime', width: 180, render: row => formatDateTime(row.updateTime) }
+  { title: '更新时间', key: 'updateTime', width: 180, render: row => formatDateTime(row.updateTime) },
+  {
+    title: '操作',
+    key: 'actions',
+    width: 100,
+    fixed: 'right',
+    render: row =>
+      h(
+        NButton,
+        {
+          size: 'small',
+          quaternary: true,
+          type: 'primary',
+          loading: detailLoadingId.value === row.id,
+          disabled: detailLoadingId.value !== null && detailLoadingId.value !== row.id,
+          onClick: () => openDetail(row.id)
+        },
+        { default: () => '详情' }
+      )
+  }
 ];
 
 function courseStatus(status: number) {
@@ -77,6 +98,7 @@ async function loadCourses() {
 }
 
 function openAdd() {
+  if (detailLoadingId.value !== null || detailCourse.value !== null) return;
   Object.assign(form, { courseName: '', description: '' });
   formRef.value?.restoreValidation();
   showAdd.value = true;
@@ -88,6 +110,27 @@ function closeAdd() {
 
 function handleModalChange(show: boolean) {
   if (!show) closeAdd();
+}
+
+async function openDetail(id: number) {
+  if (detailLoadingId.value !== null || showAdd.value || detailCourse.value !== null) return;
+  detailLoadingId.value = id;
+  try {
+    // 每次打开都按 ID 查询最新详情，避免直接使用列表里的旧数据。
+    const result = await fetchCourseDetail(id);
+    if (result.error !== null) return;
+    detailCourse.value = result.data;
+  } finally {
+    detailLoadingId.value = null;
+  }
+}
+
+function closeDetail() {
+  detailCourse.value = null;
+}
+
+function handleDetailVisible(show: boolean) {
+  if (!show) closeDetail();
 }
 
 function changePage(page: number) {
@@ -129,7 +172,7 @@ onMounted(loadCourses);
       <template #header-extra>
         <NSpace>
           <NButton :loading="loading" @click="loadCourses">刷新</NButton>
-          <NButton type="primary" @click="openAdd">新增课程</NButton>
+          <NButton type="primary" :disabled="detailLoadingId !== null" @click="openAdd">新增课程</NButton>
         </NSpace>
       </template>
       <p class="mb-16px text-14px text-gray-500">共 {{ courses.length }} 门课程，新建课程默认保存为草稿。</p>
@@ -140,11 +183,42 @@ onMounted(loadCourses);
         :loading="loading"
         :row-key="rowKey"
         :pagination="pagination"
-        :scroll-x="1000"
+        :scroll-x="1100"
         @update:page="changePage"
         @update:page-size="changePageSize"
       />
     </NCard>
+    <NModal
+      v-if="detailCourse"
+      :show="true"
+      preset="card"
+      title="课程详情"
+      class="w-620px max-w-95vw"
+      content-style="max-height: 65vh; overflow-y: auto"
+      @update:show="handleDetailVisible"
+    >
+      <NDescriptions bordered :column="1" label-placement="left">
+        <NDescriptionsItem label="课程 ID">{{ detailCourse.id }}</NDescriptionsItem>
+        <NDescriptionsItem label="课程名称">
+          <span class="break-all">{{ detailCourse.courseName }}</span>
+        </NDescriptionsItem>
+        <NDescriptionsItem label="状态">
+          <NTag size="small" :bordered="false" :type="detailCourse.status === 1 ? 'success' : 'default'">
+            {{ courseStatus(detailCourse.status) }}
+          </NTag>
+        </NDescriptionsItem>
+        <NDescriptionsItem label="课程简介">
+          <span class="whitespace-pre-wrap break-all">{{ displayText(detailCourse.description) }}</span>
+        </NDescriptionsItem>
+        <NDescriptionsItem label="创建时间">{{ formatDateTime(detailCourse.createTime) }}</NDescriptionsItem>
+        <NDescriptionsItem label="更新时间">{{ formatDateTime(detailCourse.updateTime) }}</NDescriptionsItem>
+      </NDescriptions>
+      <template #footer>
+        <NSpace justify="end">
+          <NButton @click="closeDetail">关闭</NButton>
+        </NSpace>
+      </template>
+    </NModal>
     <NModal
       :show="showAdd"
       preset="card"

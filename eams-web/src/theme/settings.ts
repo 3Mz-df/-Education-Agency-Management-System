@@ -1,18 +1,20 @@
-/** Default theme settings */
+import { EAMS_ACCENT } from './eams';
+
+/** 默认主题设置 */
 export const themeSettings: App.Theme.ThemeSetting = {
   themeScheme: 'dark',
   grayscale: false,
   colourWeakness: false,
   recommendColor: false,
-  themeColor: '#646cff',
-  themeRadius: 6,
+  themeColor: EAMS_ACCENT,
+  themeRadius: 5,
   otherColor: {
-    info: '#2080f0',
-    success: '#52c41a',
-    warning: '#faad14',
-    error: '#f5222d'
+    info: '#91a49b',
+    success: '#8fa58a',
+    warning: '#c2aa76',
+    error: '#cc7d79'
   },
-  isInfoFollowPrimary: true,
+  isInfoFollowPrimary: false,
   layout: {
     mode: 'vertical',
     scrollMode: 'content'
@@ -38,7 +40,7 @@ export const themeSettings: App.Theme.ThemeSetting = {
     visible: true,
     cache: true,
     height: 44,
-    mode: 'chrome',
+    mode: 'button',
     closeTabByMiddleClick: false
   },
   fixedHeaderAndTab: true,
@@ -67,10 +69,10 @@ export const themeSettings: App.Theme.ThemeSetting = {
   tokens: {
     light: {
       colors: {
-        container: 'rgb(255, 255, 255)',
-        layout: 'rgb(247, 250, 252)',
+        container: 'rgb(250, 249, 244)',
+        layout: 'rgb(234, 236, 227)',
         inverted: 'rgb(0, 20, 40)',
-        'base-text': 'rgb(31, 31, 31)'
+        'base-text': 'rgb(48, 58, 48)'
       },
       boxShadow: {
         header: '0 1px 2px rgb(0, 21, 41, 0.08)',
@@ -80,9 +82,9 @@ export const themeSettings: App.Theme.ThemeSetting = {
     },
     dark: {
       colors: {
-        container: 'rgb(28, 28, 28)',
-        layout: 'rgb(18, 18, 18)',
-        'base-text': 'rgb(224, 224, 224)'
+        container: 'rgb(34, 37, 35)',
+        layout: 'rgb(23, 28, 25)',
+        'base-text': 'rgb(225, 229, 218)'
       }
     }
   }
@@ -93,4 +95,10 @@ export const themeSettings: App.Theme.ThemeSetting = {
  *
  * If publish new version, use `overrideThemeSettings` to override certain theme settings
  */
-export const overrideThemeSettings: Partial<App.Theme.ThemeSetting> = {};
+export const overrideThemeSettings: Partial<App.Theme.ThemeSetting> = {
+  themeColor: themeSettings.themeColor,
+  themeRadius: themeSettings.themeRadius,
+  otherColor: themeSettings.otherColor,
+  isInfoFollowPrimary: themeSettings.isInfoFollowPrimary,
+  tokens: themeSettings.tokens
+};

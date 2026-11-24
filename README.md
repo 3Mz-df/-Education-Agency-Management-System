@@ -12,7 +12,7 @@ Project Overview：An education and training institution management platform bui
 启动顺序
 
 Swagger地址：
-http://localhost:8084/doc.html
+http://localhost:8084/doc.html (系统)
 http://localhost:8085/doc.html (课程)
 
 前端：

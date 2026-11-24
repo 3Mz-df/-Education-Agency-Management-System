@@ -37,4 +37,10 @@ public class CourseController {
         Long courseId = eduCourseService.addCourse(courseAddDTO);
         return Result.success(courseId);
     }
+
+    @GetMapping("/{id}")
+    public Result<EduCourse> detail(@PathVariable("id") Long id){
+        EduCourse course = eduCourseService.getCourseDetail(id);
+        return Result.success(course);
+    }
 }

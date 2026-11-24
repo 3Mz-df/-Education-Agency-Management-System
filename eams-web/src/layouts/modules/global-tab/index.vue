@@ -197,7 +197,7 @@ init();
 </script>
 
 <template>
-  <DarkModeContainer class="size-full flex-y-center px-16px shadow-tab">
+  <DarkModeContainer class="eams-tabs size-full flex-y-center px-16px shadow-tab">
     <div ref="bsWrapper" class="h-full flex-1-hidden" @wheel="handleWheel">
       <BetterScroll ref="bsScroll" :options="{ scrollX: true, scrollY: false, click: !isPCFlag }" @click="removeFocus">
         <div
@@ -214,7 +214,7 @@ init();
             :mode="themeStore.tab.mode"
             :dark-mode="themeStore.darkMode"
             :active="tab.id === tabStore.activeTabId"
-            :active-color="themeStore.themeColor"
+            :active-color="themeStore.themeColors.primary"
             :closable="!tabStore.isTabRetain(tab.id)"
             @pointerdown="switchTab($event, tab)"
             @mousedown="handleMousedown($event, tab)"
@@ -242,4 +242,9 @@ init();
   />
 </template>
 
-<style scoped></style>
+<style scoped>
+.eams-tabs {
+  border-bottom: 1px solid var(--eams-border);
+  background: var(--eams-chrome);
+}
+</style>
