@@ -3,7 +3,7 @@ import { h, onMounted, reactive, ref, shallowRef } from 'vue';
 import { NButton, NTag } from 'naive-ui';
 import type { DataTableColumns, FormInst, FormRules } from 'naive-ui';
 import { displayText, formatDateTime } from '@/utils/eams';
-import { fetchAddCourse, fetchCourseDetail, fetchCourseList } from '@/service/api';
+import { fetchAddCourse, fetchCourseDetail, fetchCoursePage } from '@/service/api';
 import type { Course } from '@/service/api';
 
 defineOptions({ name: 'Course' });
@@ -11,6 +11,7 @@ defineOptions({ name: 'Course' });
 const courses = shallowRef<Course[]>([]);
 const loading = ref(false);
 const loadError = ref('');
+const filters = reactive({ keyword: '', status: null as number | null });
 const detailCourse = shallowRef<Course | null>(null);
 const detailLoadingId = ref<number | null>(null);
 const showAdd = ref(false);
@@ -18,8 +19,18 @@ const saving = ref(false);
 const formRef = ref<FormInst | null>(null);
 const form = reactive({ courseName: '', description: '' });
 let requestVersion = 0;
-// 列表接口返回全部课程，当前表格分页在浏览器中完成。
-const pagination = reactive({ page: 1, pageSize: 10, showSizePicker: true, pageSizes: [10, 20, 50] });
+const pagination = reactive({
+  page: 1,
+  pageSize: 10,
+  itemCount: 0,
+  showSizePicker: true,
+  pageSizes: [10, 20, 50, 100]
+});
+const statusOptions = [
+  { label: '草稿', value: 0 },
+  { label: '上架', value: 1 },
+  { label: '下架', value: 2 }
+];
 const rules: FormRules = {
   courseName: [
     { required: true, whitespace: true, message: '请输入课程名称', trigger: ['input', 'blur'] },
@@ -83,7 +94,12 @@ async function loadCourses() {
   const version = ++requestVersion;
   loading.value = true;
   try {
-    const result = await fetchCourseList();
+    const result = await fetchCoursePage({
+      pageNum: pagination.page,
+      pageSize: pagination.pageSize,
+      keyword: filters.keyword.trim() || undefined,
+      status: filters.status ?? undefined
+    });
     // 新增后的刷新优先，较早发出的列表请求不能覆盖最新结果。
     if (version !== requestVersion) return;
     if (result.error !== null) {
@@ -91,7 +107,14 @@ async function loadCourses() {
       return;
     }
     loadError.value = '';
-    courses.value = result.data;
+    pagination.itemCount = result.data.total;
+    const lastPage = Math.max(1, Math.ceil(result.data.total / pagination.pageSize));
+    if (pagination.page > lastPage) {
+      pagination.page = lastPage;
+      await loadCourses();
+      return;
+    }
+    courses.value = result.data.list;
   } finally {
     if (version === requestVersion) loading.value = false;
   }
@@ -133,13 +156,24 @@ function handleDetailVisible(show: boolean) {
   if (!show) closeDetail();
 }
 
+function search() {
+  pagination.page = 1;
+  void loadCourses();
+}
+
+function resetFilters() {
+  Object.assign(filters, { keyword: '', status: null });
+  search();
+}
+
 function changePage(page: number) {
   pagination.page = page;
+  void loadCourses();
 }
 
 function changePageSize(size: number) {
   pagination.pageSize = size;
-  pagination.page = 1;
+  search();
 }
 
 async function addCourse() {
@@ -156,6 +190,8 @@ async function addCourse() {
     if (result.error !== null) return;
     window.$message?.success(`课程创建成功，ID：${result.data}`);
     showAdd.value = false;
+    // 新课程以草稿保存，清除筛选后回到第一页，便于立即查看。
+    Object.assign(filters, { keyword: '', status: null });
     pagination.page = 1;
     await loadCourses();
   } finally {
@@ -175,9 +211,31 @@ onMounted(loadCourses);
           <NButton type="primary" :disabled="detailLoadingId !== null" @click="openAdd">新增课程</NButton>
         </NSpace>
       </template>
-      <p class="mb-16px text-14px text-gray-500">共 {{ courses.length }} 门课程，新建课程默认保存为草稿。</p>
+      <div class="mb-16px flex flex-wrap items-center gap-12px">
+        <NInput
+          v-model:value="filters.keyword"
+          placeholder="搜索课程名称"
+          :maxlength="100"
+          clearable
+          class="w-260px max-w-full"
+          @keyup.enter="search"
+        />
+        <NSelect
+          v-model:value="filters.status"
+          :options="statusOptions"
+          clearable
+          placeholder="全部状态"
+          class="w-140px"
+        />
+        <NButton type="primary" :loading="loading" @click="search">查询</NButton>
+        <NButton :disabled="loading" @click="resetFilters">重置</NButton>
+      </div>
+      <p class="mb-16px text-14px text-gray-500">
+        符合条件共 {{ pagination.itemCount }} 门课程，新建课程默认保存为草稿。
+      </p>
       <NAlert v-if="loadError" type="error" :show-icon="false" class="mb-16px">{{ loadError }}</NAlert>
       <NDataTable
+        remote
         :columns="columns"
         :data="courses"
         :loading="loading"

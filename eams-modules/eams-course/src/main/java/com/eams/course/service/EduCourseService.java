@@ -1,7 +1,9 @@
 package com.eams.course.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.eams.common.api.PageResult;
 import com.eams.course.dto.CourseAddDTO;
+import com.eams.course.dto.CourseQueryDTO;
 import com.eams.course.entity.EduCourse;
 
 /**
@@ -14,5 +16,8 @@ public interface EduCourseService extends IService<EduCourse> {
 
     //根据id查询课程详情
     EduCourse getCourseDetail(Long id);
+
+    //分页查询课程
+    PageResult<EduCourse> pageQuery(CourseQueryDTO courseQueryDTO);
 }
 

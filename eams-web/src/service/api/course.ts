@@ -1,8 +1,12 @@
 import { courseRequest } from '../request';
-import type { Course, CourseAddDTO } from './types';
+import type { Course, CourseAddDTO, CourseQuery, PageResult } from './types';
 
 export function fetchCourseList() {
   return courseRequest<Course[]>({ url: '/course/list' });
+}
+
+export function fetchCoursePage(params: CourseQuery) {
+  return courseRequest<PageResult<Course>>({ url: '/course/page', params });
 }
 
 export function fetchCourseDetail(id: number) {

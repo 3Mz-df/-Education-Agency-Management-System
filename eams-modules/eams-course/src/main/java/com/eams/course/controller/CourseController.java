@@ -1,10 +1,13 @@
 package com.eams.course.controller;
 
+import com.eams.common.api.PageResult;
 import com.eams.common.api.Result;
 import com.eams.course.dto.CourseAddDTO;
+import com.eams.course.dto.CourseQueryDTO;
 import com.eams.course.entity.EduCourse;
 import com.eams.course.service.EduCourseService;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +27,7 @@ public class CourseController {
     }
 
     //查看课程列表
-    @GetMapping("list")
+    @GetMapping("/list")
     public Result<List<EduCourse>> list(){
         List<EduCourse> courses = eduCourseService.list();
         return Result.success(courses);
@@ -38,9 +41,17 @@ public class CourseController {
         return Result.success(courseId);
     }
 
+    //查看课程详情
     @GetMapping("/{id}")
     public Result<EduCourse> detail(@PathVariable("id") Long id){
         EduCourse course = eduCourseService.getCourseDetail(id);
         return Result.success(course);
+    }
+
+    //分页查询课程
+    @GetMapping("/page")
+    public Result<PageResult<EduCourse>> page(@Valid @ModelAttribute @ParameterObject CourseQueryDTO queryDTO){
+        PageResult<EduCourse> pageResult = eduCourseService.pageQuery(queryDTO);
+        return Result.success(pageResult);
     }
 }

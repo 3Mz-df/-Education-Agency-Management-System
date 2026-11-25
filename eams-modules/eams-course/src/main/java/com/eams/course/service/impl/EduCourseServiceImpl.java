@@ -1,9 +1,13 @@
 package com.eams.course.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.eams.common.api.PageResult;
 import com.eams.common.enums.ResultCode;
 import com.eams.common.exception.BizException;
 import com.eams.course.dto.CourseAddDTO;
+import com.eams.course.dto.CourseQueryDTO;
 import com.eams.course.entity.EduCourse;
 import com.eams.course.mapper.EduCourseMapper;
 import com.eams.course.service.EduCourseService;
@@ -42,5 +46,36 @@ public class EduCourseServiceImpl
         else {
             return course;
         }
+    }
+
+    //分页查询课程
+    @Override
+    public PageResult<EduCourse> pageQuery(CourseQueryDTO queryDTO){
+        //创建分页对象 设置页码和每页条数
+        Page<EduCourse> page1 = new Page<>(queryDTO.getPageNum(), queryDTO.getPageSize());
+
+        //创建查询条件清单
+        LambdaQueryWrapper<EduCourse> wrapper = new LambdaQueryWrapper<>();
+        //传入关键词时根据课程名称模糊查询
+        String keyword = queryDTO.getKeyword();
+        if(keyword != null && !keyword.isBlank()){
+            wrapper.like(EduCourse::getCourseName, keyword.trim());
+        }
+        //传入状态时按状态精确筛选
+        if (queryDTO.getStatus() != null){
+            wrapper.eq(EduCourse::getStatus, queryDTO.getStatus());
+        }
+        //按课程id倒叙排列（新课程在前面）
+        wrapper.orderByDesc(EduCourse::getId);
+
+        //执行分页查询
+        this.page(page1, wrapper);
+
+        return PageResult.of(
+                page1.getCurrent(),
+                page1.getSize(),
+                page1.getTotal(),
+                page1.getRecords()
+        );
     }
 }

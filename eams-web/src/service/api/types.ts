@@ -52,6 +52,13 @@ export interface Course {
   updateTime: string | null;
 }
 
+export interface CourseQuery {
+  pageNum: number;
+  pageSize: number;
+  keyword?: string;
+  status?: number;
+}
+
 export interface CourseAddDTO {
   courseName: string;
   description: string;

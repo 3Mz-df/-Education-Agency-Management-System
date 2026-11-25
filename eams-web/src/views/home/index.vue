@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, shallowRef } from 'vue';
 import { displayText, formatDateTime, userStatusText } from '@/utils/eams';
-import { fetchCourseList, fetchCurrentUser, fetchUserPage } from '@/service/api';
+import { fetchCoursePage, fetchCurrentUser, fetchUserPage } from '@/service/api';
 import type { SystemUser } from '@/service/api';
 import { useAppStore } from '@/store/modules/app';
 import { useAuthStore } from '@/store/modules/auth';
@@ -27,11 +27,11 @@ async function refresh() {
     const [user, users, courses] = await Promise.all([
       fetchCurrentUser(),
       fetchUserPage({ pageNum: 1, pageSize: 1 }),
-      fetchCourseList()
+      fetchCoursePage({ pageNum: 1, pageSize: 1 })
     ]);
     currentUser.value = user.error === null ? user.data : null;
     userCount.value = users.error === null ? users.data.total : null;
-    courseCount.value = courses.error === null ? courses.data.length : null;
+    courseCount.value = courses.error === null ? courses.data.total : null;
   } finally {
     loading.value = false;
   }
